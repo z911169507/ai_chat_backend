@@ -73,6 +73,9 @@ public class ChatController {
             @RequestBody Map<String, String> body) {
         Long userId = getUserIdFromHeader(authHeader);
         String userMessage = body.get("message");
+        System.err.println("-----------------------------------------");
+        System.out.println(userMessage);
+        System.err.println("-----------------------------------------");
         if (userMessage == null || userMessage.isBlank()) {
             throw new RuntimeException("消息不能为空"); // 由全局异常处理
         }
@@ -86,6 +89,10 @@ public class ChatController {
         Long userId = getUserIdFromHeader(authHeader);
         String title = body.getOrDefault("title", "新对话");
         String firstMessage = body.get("firstMessage");
+        
+        System.err.println("-----------------------------------------");
+        System.out.println(firstMessage);
+        System.err.println("-----------------------------------------");
         if (firstMessage == null || firstMessage.isBlank()) {
             return Map.of("code", 400, "message", "消息不能为空");
         }
@@ -106,7 +113,6 @@ public class ChatController {
             @RequestHeader("Authorization") String authHeader,
             @PathVariable Long conversationId,
             @RequestBody Map<String, String> body) {
-        Long userId = getUserIdFromHeader(authHeader);
         String userMessage = body.get("message");
         if (userMessage == null || userMessage.isBlank()) {
             return Map.of("code", 400, "message", "消息不能为空");

@@ -1,6 +1,6 @@
 package com.aihelper.ai_chat_backend.service;
 
-
+import java.util.Objects;
 import com.aihelper.ai_chat_backend.entity.Message;
 import com.aihelper.ai_chat_backend.mapper.MessageMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -64,8 +64,9 @@ public class AiService {
 
         webClient.post()
                 .uri("/api/chat")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(requestBody)
+                // 修复点：使用 Objects.requireNonNull 消除 Null type safety 警告
+                .contentType(Objects.requireNonNull(MediaType.APPLICATION_JSON))
+                .bodyValue(Objects.requireNonNull(requestBody))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToFlux(String.class)
@@ -107,7 +108,7 @@ public class AiService {
                             }
                         }
                         // 将原始块转发给前端
-                        emitter.send(SseEmitter.event().data(chunk));
+                        emitter.send(SseEmitter.event().data(Objects.requireNonNull(chunk)));
                     } catch (Exception e) {
                         emitter.completeWithError(e);
                     }
@@ -144,8 +145,9 @@ public class AiService {
 
         String responseJson = restClient.post()
                 .uri("/api/chat")
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(requestBody)
+                // 修复点：使用 Objects.requireNonNull 消除 Null type safety 警告
+                .contentType(Objects.requireNonNull(MediaType.APPLICATION_JSON))
+                .body(Objects.requireNonNull(requestBody))
                 .retrieve()
                 .body(String.class);
 
