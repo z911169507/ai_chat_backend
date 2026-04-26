@@ -61,6 +61,7 @@ public class ChatServiceImpl implements ChatService {
 //        Message aiMsg = aiService.chat(conversation.getId(), content);
 //        aiMsg.setConversationId(conversation.getId());  // 确保关联
 //        messageMapper.insert(aiMsg);
+//你好
         return conversation;
     }
     @Override
