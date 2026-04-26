@@ -43,24 +43,24 @@ public class ChatServiceImpl implements ChatService {
     }
     @Override
     @Transactional
-    public Conversation createConversation(Long userId, String title, String firstMessage) {
+    public Conversation createConversation(Long userId, String systemPrompt, String content) {
         // 1. 创建对话
         Conversation conversation = new Conversation();
         conversation.setUserId(userId);
-        conversation.setTitle(title != null ? title : "新对话");
+        conversation.setTitle(systemPrompt);
         conversationMapper.insert(conversation);
 
         // 2. 保存用户消息
         Message userMsg = new Message();
         userMsg.setConversationId(conversation.getId());
-        userMsg.setRole("user");
-        userMsg.setContent(firstMessage);
+        userMsg.setRole("system");
+        userMsg.setContent(content);
         messageMapper.insert(userMsg);
 
         // 3. 模拟 AI 回复（后续会对接真实 AI）
-        Message aiMsg = aiService.chat(conversation.getId(), firstMessage);
-        aiMsg.setConversationId(conversation.getId());  // 确保关联
-        messageMapper.insert(aiMsg);
+//        Message aiMsg = aiService.chat(conversation.getId(), content);
+//        aiMsg.setConversationId(conversation.getId());  // 确保关联
+//        messageMapper.insert(aiMsg);
         return conversation;
     }
     @Override

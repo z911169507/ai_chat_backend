@@ -45,11 +45,15 @@ public class AiService {
             m.put("content", msg.getContent());
             messagesList.add(m);
         }
+        for (Map<String, Object> stringObjectMap : messagesList) {
+            System.out.println(stringObjectMap.get("content"));
+        }
         // 追加当前用户消息
-        Map<String, Object> currentMsg = new HashMap<>();
-        currentMsg.put("role", "user");
-        currentMsg.put("content", userMessage);
-        messagesList.add(currentMsg);
+//        Map<String, Object> currentMsg = new HashMap<>();
+//        currentMsg.put("role", "user");
+//        currentMsg.put("content", userMessage);
+//        messagesList.add(currentMsg);
+
 
         // 3. 构建请求体（使用完整历史）
         Map<String, Object> requestBody = Map.of(
@@ -84,9 +88,7 @@ public class AiService {
 
                     emitter.complete();
                 })
-                .doOnError(e -> {
-                    emitter.completeWithError(e);
-                })
+                .doOnError(emitter::completeWithError)
                 .subscribe(chunk -> {
                     try {
                         // 解析收到的 JSON 块
@@ -132,7 +134,7 @@ public class AiService {
             messagesList.add(m);
         }
         Map<String, Object> currentMsg = new HashMap<>();
-        currentMsg.put("role", "user");
+        currentMsg.put("role", "system");
         currentMsg.put("content", userMessage);
         messagesList.add(currentMsg);
 
